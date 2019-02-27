@@ -39,3 +39,9 @@ func (username *Username) Bytes() []byte {
 	json, _ := json.MarshalIndent(*username, "", "  ")
 	return json
 }
+
+// String - Encode a username into a string
+func (username *Username) String() string {
+	json, _ := json.MarshalIndent(*username, "", "  ")
+	return string(json)
+}
