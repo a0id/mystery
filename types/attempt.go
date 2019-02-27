@@ -31,7 +31,8 @@ func NewAttempt(username string, pin int, token string) (*Attempt, error) {
 		return nil, err
 	}
 
-	newToken := []byte(token)
+	rawnewToken := []byte(token)
+	newToken := rsa.
 
 	newOrigin, err := common.GetPublicIP()
 	if err != nil {
