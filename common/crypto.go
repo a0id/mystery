@@ -6,12 +6,12 @@ import (
 	"crypto/rand"
 	"io"
 	"io/ioutil"
-	"os"
 )
 
-func NewEncrypt(data []byte, passphrase string) ([]byte, error) {
+// AESEncrypt - Encrypt using an AES cipher
+func AESEncrypt(data []byte, passphrase []byte) ([]byte, error) {
 	// Create a new AES cipher
-	block, err := aes.NewCipher([]byte(Sha3([]byte(passphrase))))
+	block, err := aes.NewCipher([]byte(Sha3(passphrase)))
 	if err != nil {
 		return nil, err
 	}
@@ -38,9 +38,10 @@ func NewEncrypt(data []byte, passphrase string) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func NewDecrypt(data []byte, passphrase string) ([]byte, error) {
+// AESDecrypt - Decrypt using an AES cipher
+func AESDecrypt(data []byte, passphrase []byte) ([]byte, error) {
 	// Create the cipher from passphrase
-	key := []byte(Sha3([]byte(passphrase)))
+	key := []byte(Sha3(passphrase))
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -61,20 +62,4 @@ func NewDecrypt(data []byte, passphrase string) ([]byte, error) {
 	}
 
 	return plaintext, nil
-}
-
-func EncryptFile(filename string, data []byte, passphrase string) error {
-	f, _ := os.Create(filename)
-	defer f.Close()
-	encrypted, err := NewEncrypt(data, passphrase)
-	if err != nil {
-		return err
-	}
-	f.Write(encrypted)
-	return nil
-}
-
-func DecryptFile(filename string, passphrase string) ([]byte, error) {
-	data, _ := ioutil.ReadFile(filename)
-	return NewDecrypt(data, passphrase)
 }

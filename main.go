@@ -2,31 +2,30 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 
-	"github.com/a0id/mystery/common"
+	"github.com/a0id/mystery/types"
 )
 
 func main() {
-	// err := common.EncryptRSA([]byte("test text!"), "testwrite")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// err := common.EncryptFile(
-	// 	"encrypted.txt",
-	// 	[]byte("test"),
-	// 	"password",
-	// )
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	decrypted, err := common.DecryptFile(
-		"encrypted.txt",
-		"password",
+	attempt, err := types.NewAttempt(
+		"a0id",
+		9164,
+		[]byte("this is the payload"),
 	)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("decrypted: %s\n", decrypted)
+
+	secureAttempt, err := types.EncryptAttempt(attempt, []byte("password"))
+	if err != nil {
+		panic(err)
+	}
+
+	err = ioutil.WriteFile("secureattempt", secureAttempt, 0600)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("wrote to file")
+
 }
