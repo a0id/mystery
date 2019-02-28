@@ -24,7 +24,7 @@ func TestEncrypt(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log("wrote to file")
+	t.Log("wrote encrypted to file")
 }
 
 func TestDecrypt(t *testing.T) {
@@ -34,5 +34,9 @@ func TestDecrypt(t *testing.T) {
 	}
 
 	attempt, err := DecryptAttempt(rawAttempt, []byte("password"))
-	t.Logf("decrypted: %s\n", attempt.String())
+	err = ioutil.WriteFile("../secureattempt", []byte(attempt.String()), 0600)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log("wrote decrypted to file")
 }

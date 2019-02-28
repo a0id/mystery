@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"io"
-	"io/ioutil"
 )
 
 // AESEncrypt - Encrypt using an AES cipher
@@ -28,10 +27,10 @@ func AESEncrypt(data []byte, passphrase []byte) ([]byte, error) {
 	}
 
 	// Write the nonce to memory
-	err = ioutil.WriteFile("nonce.txt", nonce, 0600)
-	if err != nil {
-		return nil, err
-	}
+	// err = ioutil.WriteFile("nonce.txt", nonce, 0600)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// Return the encrypted data
 	ciphertext := gcm.Seal(nonce, nonce, data, nil)
