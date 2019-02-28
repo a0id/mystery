@@ -8,16 +8,10 @@ import (
 	"encoding/asn1"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 )
-
-// ErrBadKeyData - Error is returned when a key is not PEM-encoded
-var ErrBadKeyData = errors.New("bad key data: not PEM-encoded")
-
-// ErrOtherKeyErr - Unspecified / Random / other key error
-var ErrOtherKeyErr = errors.New("other key error")
 
 // GenerateRSAKeypair - Generate and export an RSA public/private keypair
 func GenerateRSAKeypair() error {
@@ -89,7 +83,7 @@ func ExportPEMPublicKey(fileName string, pubkey rsa.PublicKey) error {
 }
 
 // EncryptRSA - Encrypt a []byte with RSA
-func EncryptRSA(in []byte) error {
+func EncryptRSA(input []byte, outFileName string) error {
 	// Read the private key
 	pemData, err := ioutil.ReadFile("private.pem")
 	if err != nil {
@@ -99,7 +93,7 @@ func EncryptRSA(in []byte) error {
 	// Extract the PEM-encoded data block
 	block, _ := pem.Decode(pemData)
 	if block == nil {
-		return ErrBadKeyData
+		return errors.New("bad key data: not PEM-encoded")
 	}
 
 	if block.Type != "PRIVATE KEY" {
@@ -109,28 +103,38 @@ func EncryptRSA(in []byte) error {
 	// Decode the RSA private key
 	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		return ErrOtherKeyErr
+		return err
 	}
 
-	outFileName := "thing.txt"
-
-	var out []byte
-	// Decrypt the data
-	out, err = rsa.DecryptOAEP(sha1.New(), rand.Reader, priv, in, []byte(outFileName))
-	if err != nil {
-		log.Fatalf("decrypt: %s", err)
-	}
+	// Set up the encryption stuff
+	randHash := sha1.New()
+	randReader := rand.Reader
+	// randReader := rand.Reader
+	fmt.Printf("randHash: %x\n", &randHash)
 
 	// Encrypt the data
-	// out, err = rsa.EncryptOAEP(sha1.New(), rand.Reader, &priv.PublicKey, in, []byte(outFileName))
-	// if err != nil {
-	// 	return err
-	// }
-
-	// Write data to output file
-	err = ioutil.WriteFile("thing.txt", []byte(out), 0600)
+	encrypted, err := rsa.EncryptOAEP(randHash, randReader, &priv.PublicKey, input, []byte(outFileName))
 	if err != nil {
 		return err
 	}
+
+	// Write data to output file
+	err = ioutil.WriteFile(outFileName, []byte(encrypted), 0600)
+	if err != nil {
+		return err
+	}
+
+	// Decrypt the data
+	decrypted, err := rsa.DecryptOAEP(randHash, nil, priv, input, []byte(outFileName))
+	if err != nil {
+		return err
+	}
+	fmt.Println("decrypted: " + string(decrypted))
+
+	// Write data to output file
+	// err = ioutil.WriteFile(outFileName, []byte(decrypted), 0600)
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
