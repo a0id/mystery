@@ -1,0 +1,17 @@
+package server
+
+import (
+	"fmt"
+	"net"
+)
+
+// Handle - Handle an incomming connection
+func Handle(conn net.Conn) {
+	var buffer []byte
+	for {
+		size, err := conn.Read(buffer)
+		if err == nil && size > 0 {
+			fmt.Printf("received: %x\n", buffer)
+		}
+	}
+}
