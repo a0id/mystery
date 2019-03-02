@@ -78,8 +78,10 @@ func main() {
 		}
 
 		attempt, err := types.NewAttempt(username, pin, payload)
-
-		encrypted, err := types.EncryptAttempt(attempt, []byte(passphrase))
+		if err != nil {
+			panic(err)
+		}
+		encrypted, err := types.EncryptAttempt(*attempt, []byte(passphrase))
 		if err != nil {
 			panic(err)
 		}
@@ -89,7 +91,7 @@ func main() {
 			panic(err)
 		}
 
-		fmt.Println("exported")
+		fmt.Println("exported attempt")
 	} else
 
 	// Load an attempt from memory
@@ -111,8 +113,30 @@ func main() {
 			panic(err)
 		}
 
+		err = ioutil.WriteFile(*loadFlag, attempt.Bytes(), 0600)
+		if err != nil {
+			panic(err)
+		}
+
 		fmt.Println(attempt.String())
 
 	}
+
+	// decoded, err := base64.StdEncoding.DecodeString("ewogICJ1c2VybmFtZSI6IHsKICAgICJ1c2VybmFtZSI6ICJhMGlkIiwKICAgICJwaW4iOiB7CiAgICAgICJwaW4iOiA5MTY0LAogICAgICAibGVuZ3RoIjogNAogICAgfSwKICAgICJoYXNoIjogIlRTRTIwLzROTHVKSmlzVWs0TXhUOXlIYkN1akV5SE4xWlBkZ1VlOHVjaUU9IgogIH0sCiAgInBheWxvYWQiOiAiZEdocGN5QnBjeUIwYUdVZ2NHRjViRzloWkE9PSIsCiAgIm9yaWdpbiI6ICIxOTIuMTY4LjEuMjUzIiwKICAidGltZXN0YW1wIjogIjIwMTktMDMtMDIgMTA6NTM6MzUuMzE3NjUzIC0wNTAwIEVTVCBtPSswLjAwMTQ3NTU4MiIsCiAgImhhc2giOiAiWW1yOFlVOVVtZkFSN1FPNXk4OXFhOW9tZnV0QUpuQkFkaTJzVnV2a3p4UT0iCn0=")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// // decrypted, err := common.AESDecrypt(
+	// // 	decoded,
+	// // 	[]byte("matt"),
+	// // )
+
+	// decrypted, err := types.AttemptFromBytes(decoded)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// fmt.Println(decrypted.String())
 
 }

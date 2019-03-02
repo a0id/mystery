@@ -26,12 +26,6 @@ func AESEncrypt(data []byte, passphrase []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	// Write the nonce to memory
-	// err = ioutil.WriteFile("nonce.txt", nonce, 0600)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	// Return the encrypted data
 	ciphertext := gcm.Seal(nonce, nonce, data, nil)
 	return ciphertext, nil

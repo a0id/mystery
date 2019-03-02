@@ -15,7 +15,7 @@ func TestEncrypt(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	secureAttempt, err := EncryptAttempt(attempt, []byte("password"))
+	secureAttempt, err := EncryptAttempt(*attempt, []byte("password"))
 	if err != nil {
 		t.Fatal(err)
 	}

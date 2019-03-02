@@ -50,9 +50,9 @@ func NewAttempt(username string, pin int, payload []byte) (*Attempt, error) {
 }
 
 // EncryptAttempt - Encrypt an attempt struct
-func EncryptAttempt(rawAttempt *Attempt, passphrase []byte) ([]byte, error) {
+func EncryptAttempt(rawAttempt Attempt, passphrase []byte) ([]byte, error) {
 	attempt := rawAttempt.Bytes()
-	secureAttempt, err := common.AESEncrypt(attempt, passphrase)
+	secureAttempt, err := common.AESEncrypt(attempt, common.Sha3(passphrase))
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func EncryptAttempt(rawAttempt *Attempt, passphrase []byte) ([]byte, error) {
 // DecryptAttempt - Decrypt bytes and return an Attempt struct
 func DecryptAttempt(encryptedAttempt []byte, passphrase []byte) (*Attempt, error) {
 	// Decrypt the bytes
-	rawAttempt, err := common.AESDecrypt(encryptedAttempt, passphrase)
+	rawAttempt, err := common.AESDecrypt(encryptedAttempt, common.Sha3(passphrase))
 	if err != nil {
 		return nil, err
 	}
