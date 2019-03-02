@@ -18,6 +18,7 @@ var (
 	serverFlag   = flag.String("server", "", "Start a server")
 	clientFlag   = flag.String("client", "", "Start a client")
 	generateFlag = flag.Bool("generate", false, "Generate an attempt struct")
+	loadFlag     = flag.String("load", "", "Load an attempt")
 )
 
 func main() {
@@ -89,6 +90,29 @@ func main() {
 		}
 
 		fmt.Println("exported")
+	} else
+
+	// Load an attempt from memory
+	if *loadFlag != "" {
+		raw, err := ioutil.ReadFile(*loadFlag)
+		if err != nil {
+			panic(err)
+		}
+
+		reader := bufio.NewReader(os.Stdin)
+
+		// Get the username
+		fmt.Print("passphrase ? ")
+		passphrase, _ := reader.ReadString('\n')
+		passphrase = strings.TrimSuffix(passphrase, "\n")
+
+		attempt, err := types.DecryptAttempt(raw, []byte(passphrase))
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(attempt.String())
+
 	}
 
 }
