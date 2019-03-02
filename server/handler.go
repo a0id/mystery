@@ -11,7 +11,7 @@ func Handle(conn net.Conn) {
 	for {
 		size, err := conn.Read(buffer)
 		if err == nil && size > 0 {
-			fmt.Printf("received: %x\n", buffer)
+			fmt.Printf("received: %s\n", buffer)
 		}
 	}
 }
