@@ -18,7 +18,10 @@ func InitClient(ip, port string) error {
 		panic(err)
 	}
 
-	sendPayload(conn)
+	err = sendPayload(conn)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -37,7 +40,7 @@ func sendPayload(conn net.Conn) error {
 	}
 
 	conn.Write(payload)
-	fmt.Printf("wrote payload: %s\n", payload)
+	fmt.Printf("wrote payload '%s' to server\n", payload)
 
 	return nil
 }

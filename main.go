@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/xoreo/mystery/client"
+	"github.com/xoreo/mystery/common"
 	"github.com/xoreo/mystery/server"
 	"github.com/xoreo/mystery/types"
 )
@@ -22,6 +23,8 @@ var (
 )
 
 func main() {
+	ip, _ := common.GetPublicIP()
+	fmt.Printf("%s\n", ip)
 	flag.Parse()
 	// Handle server
 	if *serverFlag != "" {

@@ -8,7 +8,7 @@ import (
 // InitServer - Start a server
 func InitServer(port string) error {
 	// Server setup
-	validationChan := make(chan []byte, 1000)
+	validationChan := make(chan []byte)
 	fmt.Println("server initiated")
 	fd, err := net.Listen("tcp", ":"+port)
 
@@ -30,19 +30,23 @@ func InitServer(port string) error {
 			go Handle(connection, validationChan)
 
 			// Read from the channel & validate
-			data := <-validationChan
-			fmt.Printf("from chan: %s\n", data)
-			valid, err := isValid(data)
+			// data := <-validationChan
 			if err != nil {
-				return err
+				panic(err)
 			}
 
+			// fmt.Printf("from chan: %s\n", data)
+			// valid, err := isValid(data)
+			// if err != nil {
+			// 	return err
+			// }
+
 			// Respond
-			if valid {
-				connection.Write([]byte("accepted"))
-			} else {
-				connection.Write([]byte("denied"))
-			}
+			// if valid {
+			// 	connection.Write([]byte("accepted"))
+			// } else {
+			// 	connection.Write([]byte("denied"))
+			// }
 		}
 	}
 	return nil
