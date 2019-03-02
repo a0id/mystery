@@ -72,7 +72,7 @@ func DecryptAttempt(encryptedAttempt []byte, passphrase []byte) (*Attempt, error
 	if err != nil {
 		return nil, err
 	}
-	return attempt, nil
+	return &attempt, nil
 }
 
 // Bytes - Encode an attempt into a []byte
@@ -88,11 +88,11 @@ func (attempt *Attempt) String() string {
 }
 
 // AttemptFromBytes - Construct an Attempt struct from a []byte
-func AttemptFromBytes(bytes []byte) (*Attempt, error) {
-	buffer := &Attempt{}
-	err := json.Unmarshal(bytes, buffer)
+func AttemptFromBytes(bytes []byte) (Attempt, error) {
+	buffer := Attempt{}
+	err := json.Unmarshal(bytes, &buffer)
 	if err != nil {
-		return nil, err
+		return Attempt{}, err
 	}
 
 	return buffer, nil

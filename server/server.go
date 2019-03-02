@@ -2,7 +2,10 @@ package server
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net"
+
+	"github.com/xoreo/mystery/types"
 )
 
 // InitServer - Start a server
@@ -26,33 +29,46 @@ func InitServer(port string) error {
 		if err == nil {
 			// Handle the client
 			clientCount++
-			fmt.Println("accepted client")
+			fmt.Println("client connected")
 			go Handle(connection, validationChan)
 
 			// Read from the channel & validate
-			// data := <-validationChan
+			data := <-validationChan
 			if err != nil {
-				panic(err)
+				return err
 			}
 
-			// fmt.Printf("from chan: %s\n", data)
-			// valid, err := isValid(data)
-			// if err != nil {
-			// 	return err
-			// }
+			// Check for validity
+			valid := isValid(data)
 
 			// Respond
-			// if valid {
-			// 	connection.Write([]byte("accepted"))
-			// } else {
-			// 	connection.Write([]byte("denied"))
-			// }
+			if valid {
+				fmt.Println("accepted client payload")
+				connection.Write([]byte("accepted"))
+			} else {
+				fmt.Println("declined client payload")
+				connection.Write([]byte("denied"))
+			}
 		}
 	}
 	return nil
 }
 
 // isValid - Validate an attempt
-func isValid(input []byte) (bool, error) {
-	return true, nil // Placeholder for now
+func isValid(input []byte) bool {
+	// Load passphrase from memory
+	passphrase, err := ioutil.ReadFile("passphrase.sec")
+	if err != nil {
+		return false
+	}
+	_, err = types.DecryptAttempt(input, passphrase)
+	if err != nil {
+		return false
+	}
+
+	// Export the attempt to server memory
+	// common.CreateDirIfDoesNotExit(common.ExportDir)
+	// exportFilename := fmt.Sprintf("data/%s", string((*attempt).Hash)[0:8])
+	// ioutil.WriteFile(exportFilename, (*attempt).Bytes(), 0600)
+	return true
 }

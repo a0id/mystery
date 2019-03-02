@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/xoreo/mystery/client"
-	"github.com/xoreo/mystery/common"
 	"github.com/xoreo/mystery/server"
 	"github.com/xoreo/mystery/types"
 )
@@ -23,8 +22,6 @@ var (
 )
 
 func main() {
-	ip, _ := common.GetPublicIP()
-	fmt.Printf("%s\n", ip)
 	flag.Parse()
 	// Handle server
 	if *serverFlag != "" {
@@ -89,7 +86,7 @@ func main() {
 			panic(err)
 		}
 
-		err = ioutil.WriteFile(exportFile, encrypted, 0600)
+		err = ioutil.WriteFile(exportFile+".secure", encrypted, 0600)
 		if err != nil {
 			panic(err)
 		}

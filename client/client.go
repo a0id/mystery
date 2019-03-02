@@ -7,21 +7,35 @@ import (
 	"net"
 	"os"
 	"strings"
+
+	"github.com/xoreo/mystery/common"
 )
 
 // InitClient - Start a client
 func InitClient(ip, port string) error {
-	fmt.Printf("client connecting to %s:%s\n", ip, port)
-
+	// Connect to the server
 	conn, err := net.Dial("tcp", ip+":"+port)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	defer conn.Close()
 
+	// Write payload to server
 	err = sendPayload(conn)
 	if err != nil {
 		return err
 	}
+
+	// Read response
+	buffer := make([]byte, common.BuffSize)
+	for {
+		size, err := conn.Read(buffer)
+		if err == nil && size > 0 && size < common.BuffSize {
+			fmt.Printf("server: %s\n", buffer[0:size])
+			break
+		}
+	}
+
 	return nil
 }
 
@@ -29,7 +43,7 @@ func InitClient(ip, port string) error {
 func sendPayload(conn net.Conn) error {
 	reader := bufio.NewReader(os.Stdin)
 
-	// Get the passphrase
+	// Get the payload
 	fmt.Print("payload filename ? ")
 	payloadFile, _ := reader.ReadString('\n')
 	payloadFile = strings.TrimSuffix(payloadFile, "\n")
@@ -39,8 +53,8 @@ func sendPayload(conn net.Conn) error {
 		return err
 	}
 
+	// Writ eto server
 	conn.Write(payload)
-	fmt.Printf("wrote payload '%s' to server\n", payload)
 
 	return nil
 }

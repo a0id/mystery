@@ -2,7 +2,10 @@ DIR_NAME_HERE = "."
 IGNORE = [
 ".gitignore",
 "counter",
-".git"
+".git",
+"vendor",
+"Gopkg.lock",
+"Gopkg.toml"
 ]
 LISENCE = 0
 import os

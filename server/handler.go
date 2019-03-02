@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net"
 
 	"github.com/xoreo/mystery/common"
@@ -10,19 +9,15 @@ import (
 
 // Handle - Handle an incomming connection
 func Handle(conn net.Conn, validationChan chan []byte) {
-	// var buffer []byte
+	// defer conn.Close()
 	buffer := make([]byte, common.BuffSize)
 	for {
 		size, err := conn.Read(buffer)
-		fmt.Printf("received: %s\n", buffer)
 		if err == nil && size > 0 && size < common.BuffSize {
-			fmt.Println("good")
-			fmt.Printf("received: %s\n", buffer)
-			err = ioutil.WriteFile("received", buffer, 0600)
-			if err != nil {
-				fmt.Println("writing error")
-			}
-			validationChan <- buffer
+			fmt.Printf("\n\n===== BEGIN PAYLOAD =====\n%s\n===== END PAYLOAD =====\n\n", buffer)
+
+			// Write to the channel and close the connection
+			validationChan <- buffer[0:size]
 			break
 		}
 	}
