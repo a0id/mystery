@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/a0id/mystery/common"
+	"github.com/xoreo/mystery/common"
 )
 
 // ErrInvalidUsername - The error thrown when the username is blank

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/a0id/mystery/common"
+	"github.com/xoreo/mystery/common"
 )
 
 // ErrInvalidPin - An error thrown when the user supplies a non-4-digit pin

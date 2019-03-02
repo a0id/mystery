@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/a0id/mystery/client"
-	"github.com/a0id/mystery/server"
-	"github.com/a0id/mystery/types"
+	"github.com/xoreo/mystery/client"
+	"github.com/xoreo/mystery/server"
+	"github.com/xoreo/mystery/types"
 )
 
 var (

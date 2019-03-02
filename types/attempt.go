@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/a0id/mystery/common"
+	"github.com/xoreo/mystery/common"
 )
 
 // ErrInvalidArgumentsNewAttempt - Error is thrown when NewAttempt params are blank
