@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net"
 
+	"github.com/xoreo/mystery/common"
 	"github.com/xoreo/mystery/types"
 )
 
@@ -61,14 +62,22 @@ func isValid(input []byte) bool {
 	if err != nil {
 		return false
 	}
-	_, err = types.DecryptAttempt(input, passphrase)
+
+	attempt, err := types.DecryptAttempt(input, passphrase)
 	if err != nil {
 		return false
 	}
 
 	// Export the attempt to server memory
-	// common.CreateDirIfDoesNotExit(common.ExportDir)
-	// exportFilename := fmt.Sprintf("data/%s", string((*attempt).Hash)[0:8])
-	// ioutil.WriteFile(exportFilename, (*attempt).Bytes(), 0600)
+	common.CreateDirIfDoesNotExit(common.ExportDir)
+	hexHash := fmt.Sprintf("%x", attempt.Hash)[0:8]
+	exportFilename := fmt.Sprintf("%s%s.attempt", common.ExportDir, string(hexHash))
+	err = ioutil.WriteFile(exportFilename, attempt.Bytes(), 0600)
+	fmt.Println(exportFilename)
+	if err != nil {
+		fmt.Println("its happening here")
+		panic(err)
+	}
+
 	return true
 }

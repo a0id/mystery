@@ -1,3 +1,6 @@
 vendor/
+
+# This project's "custom" file types:
 *.sec
 *.secure
+*.attempt

@@ -14,7 +14,7 @@ func Handle(conn net.Conn, validationChan chan []byte) {
 	for {
 		size, err := conn.Read(buffer)
 		if err == nil && size > 0 && size < common.BuffSize {
-			fmt.Printf("\n\n===== BEGIN PAYLOAD =====\n%s\n===== END PAYLOAD =====\n\n", buffer)
+			fmt.Printf("\n\n===== BEGIN PAYLOAD =====\n%s\n===== END PAYLOAD =====\n\n", buffer[0:size])
 
 			// Write to the channel and close the connection
 			validationChan <- buffer[0:size]

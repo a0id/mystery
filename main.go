@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/xoreo/mystery/common"
+
 	"github.com/xoreo/mystery/client"
 	"github.com/xoreo/mystery/server"
 	"github.com/xoreo/mystery/types"
@@ -22,6 +24,7 @@ var (
 )
 
 func main() {
+	common.InitCommon()
 	flag.Parse()
 	// Handle server
 	if *serverFlag != "" {
@@ -47,12 +50,12 @@ func main() {
 		// Get the username
 		fmt.Print("username ? ")
 		username, _ := reader.ReadString('\n')
-		username = strings.TrimSuffix(username, "\n")
+		username = strings.TrimSuffix(username, common.NEWLINE)
 
 		// Get the pin
 		fmt.Print("pin ? ")
 		rawPin, _ := reader.ReadString('\n')
-		pin, err := strconv.Atoi(strings.TrimSuffix(rawPin, "\n"))
+		pin, err := strconv.Atoi(strings.TrimSuffix(rawPin, common.NEWLINE))
 		if err != nil {
 			panic(err)
 		}
@@ -60,17 +63,17 @@ func main() {
 		// Get the payload file
 		fmt.Print("payload filename ? ")
 		payloadFile, _ := reader.ReadString('\n')
-		payloadFile = strings.TrimSuffix(payloadFile, "\n")
+		payloadFile = strings.TrimSuffix(payloadFile, common.NEWLINE)
 
 		// Get the file to write to
 		fmt.Print("export filename ? ")
 		exportFile, _ := reader.ReadString('\n')
-		exportFile = strings.TrimSuffix(exportFile, "\n")
+		exportFile = strings.TrimSuffix(exportFile, common.NEWLINE)
 
 		// Get the passphrase
 		fmt.Print("passphrase ? ")
 		passphrase, _ := reader.ReadString('\n')
-		passphrase = strings.TrimSuffix(passphrase, "\n")
+		passphrase = strings.TrimSuffix(passphrase, common.NEWLINE)
 
 		payload, err := ioutil.ReadFile(payloadFile)
 		if err != nil {
@@ -106,7 +109,7 @@ func main() {
 		// Get the username
 		fmt.Print("passphrase ? ")
 		passphrase, _ := reader.ReadString('\n')
-		passphrase = strings.TrimSuffix(passphrase, "\n")
+		passphrase = strings.TrimSuffix(passphrase, common.NEWLINE)
 
 		attempt, err := types.DecryptAttempt(raw, []byte(passphrase))
 		if err != nil {

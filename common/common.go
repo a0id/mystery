@@ -4,9 +4,10 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
-	"github.com/glendc/go-external-ip"
+	externalip "github.com/glendc/go-external-ip"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -18,6 +19,16 @@ var BuffSize = 1000000 // 1 MB
 
 // ExportDir - The dir to export accepted payloads
 var ExportDir = "data/"
+
+// NEWLINE - A universal newline character
+var NEWLINE = "\n"
+
+// InitCommon - Initialize the common package
+func InitCommon() {
+	if runtime.GOOS == "windows" {
+		NEWLINE = "\r\n" // The newline character on Windows
+	}
+}
 
 // Sha3 - Hash input using sha3
 func Sha3(b []byte) []byte {

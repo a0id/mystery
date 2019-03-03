@@ -46,7 +46,7 @@ func sendPayload(conn net.Conn) error {
 	// Get the payload
 	fmt.Print("payload filename ? ")
 	payloadFile, _ := reader.ReadString('\n')
-	payloadFile = strings.TrimSuffix(payloadFile, "\n")
+	payloadFile = strings.TrimSuffix(payloadFile, common.NEWLINE)
 
 	payload, err := ioutil.ReadFile(payloadFile)
 	if err != nil {
@@ -55,6 +55,7 @@ func sendPayload(conn net.Conn) error {
 
 	// Writ eto server
 	conn.Write(payload)
+	fmt.Println("sending now")
 
 	return nil
 }
