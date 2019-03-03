@@ -55,7 +55,7 @@ func sendPayload(conn net.Conn) error {
 
 	// Writ eto server
 	conn.Write(payload)
-	fmt.Println("sending now")
+	fmt.Println("sending payload")
 
 	return nil
 }
