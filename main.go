@@ -125,21 +125,4 @@ func main() {
 
 	}
 
-	// decoded, err := base64.StdEncoding.DecodeString("ewogICJ1c2VybmFtZSI6IHsKICAgICJ1c2VybmFtZSI6ICJhMGlkIiwKICAgICJwaW4iOiB7CiAgICAgICJwaW4iOiA5MTY0LAogICAgICAibGVuZ3RoIjogNAogICAgfSwKICAgICJoYXNoIjogIlRTRTIwLzROTHVKSmlzVWs0TXhUOXlIYkN1akV5SE4xWlBkZ1VlOHVjaUU9IgogIH0sCiAgInBheWxvYWQiOiAiZEdocGN5QnBjeUIwYUdVZ2NHRjViRzloWkE9PSIsCiAgIm9yaWdpbiI6ICIxOTIuMTY4LjEuMjUzIiwKICAidGltZXN0YW1wIjogIjIwMTktMDMtMDIgMTA6NTM6MzUuMzE3NjUzIC0wNTAwIEVTVCBtPSswLjAwMTQ3NTU4MiIsCiAgImhhc2giOiAiWW1yOFlVOVVtZkFSN1FPNXk4OXFhOW9tZnV0QUpuQkFkaTJzVnV2a3p4UT0iCn0=")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// // decrypted, err := common.AESDecrypt(
-	// // 	decoded,
-	// // 	[]byte("matt"),
-	// // )
-
-	// decrypted, err := types.AttemptFromBytes(decoded)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Println(decrypted.String())
-
 }
