@@ -29,3 +29,6 @@ byte[] Hash        // The SHA3 hash of the attempt
 ```
 
 The username type contains a four-digit integer pin and a string.
+
+### Generation and further explanation
+When generating an attempt struct using the `--generate` flag, you will be prompted to enter a username, pin, and payload filename. You will also be prompted to enter a passphrase and an export filename. This passphrase is used to encrypt the struct, which is then exported to the filename supplied. Then, when running the client, the user will be prompted to enter a payload filename. When prompted to do so, enter the name of the exported attempt. If the server is able to decrypt the attempt using the passphrase on the server, then the client's attempt struct will be accepted.
