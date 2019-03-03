@@ -15,3 +15,17 @@ To start the client, run
 To generate an attempt, run
 <br>
 `./main --generate`
+
+## The attempt struct
+The attempt struct is a data structure accepted by the server (when properly encrypted).
+
+The attempt struct has the following fields:
+```
+Username* Username // The username and 4-digit pin
+byte[] Payload     // The payload
+string Origin      // The ip address of the host on which the attempt was created
+string Timestamp   // The time when the attempt was created
+byte[] Hash        // The SHA3 hash of the attempt
+```
+
+The username type contains a four-digit integer pin and a string.
