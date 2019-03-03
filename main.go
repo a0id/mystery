@@ -17,10 +17,10 @@ import (
 )
 
 var (
-	serverFlag   = flag.String("server", "", "Start a server")
-	clientFlag   = flag.String("client", "", "Start a client")
-	generateFlag = flag.Bool("generate", false, "Generate an attempt struct")
-	loadFlag     = flag.String("load", "", "Load an attempt")
+	serverFlag   = flag.String("server", "", "Start a server\nEx: ./main --server <port>")
+	clientFlag   = flag.String("client", "", "Start a client\nEx: ./main --client <ip>:<port>")
+	generateFlag = flag.Bool("generate", false, "Generate a secure payload (an attempt struct)")
+	loadFlag     = flag.String("load", "", "Load a secure payload (an attempt struct)\nEx: ./main --load <filename>")
 )
 
 func main() {
